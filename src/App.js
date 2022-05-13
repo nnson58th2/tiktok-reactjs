@@ -1,40 +1,22 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function App() {
-  const [job, setJob] = useState("");
-  const [jobs, setJobs] = useState(() => {
-    const storageJobs = JSON.parse(localStorage.getItem("jobs"));
-    return storageJobs ?? [];
-  });
+  const [lessonId, setLessonId] = useState(1);
 
-  const handleAddJob = (event) => {
-    event.preventDefault();
+  useEffect(() => {
+    const handleComment = ({ detail }) => {
+      console.log(detail);
+    };
 
-    setJobs((prevJob) => {
-      const newJobs = [...prevJob, job];
+    window.addEventListener(`lesson-${lessonId}`, handleComment);
 
-      // Save to local storage
-      const jsonJobs = JSON.stringify(newJobs);
-      localStorage.setItem("jobs", jsonJobs);
-
-      return newJobs;
-    });
-    setJob("");
-  };
+    return () => {
+      window.removeEventListener(`lesson-${lessonId}`, handleComment);
+    };
+  }, [lessonId]);
 
   return (
     <div className="App" style={{ padding: 32 }}>
-      <form noValidate>
-        <input
-          type="text"
-          value={job}
-          onChange={(event) => setJob(event.target.value)}
-        />
-        <button type="submit" onClick={(event) => handleAddJob(event)}>
-          Add
-        </button>
-      </form>
-
       <ul>
         {jobs.map((job, index) => (
           <li key={index}>{job}</li>
