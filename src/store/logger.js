@@ -4,13 +4,12 @@ function logger(reducer) {
     console.log('Prev state:: ', prevState);
     console.log('Action:: ', action);
 
-    const newState = reducer(prevState, action);
+    const nextState = reducer(prevState, action);
 
-    console.log('Next state:: ', newState);
-
+    console.log('Next state:: ', nextState);
     console.groupEnd(action.type);
 
-    return newState;
+    return nextState;
   };
 }
 
